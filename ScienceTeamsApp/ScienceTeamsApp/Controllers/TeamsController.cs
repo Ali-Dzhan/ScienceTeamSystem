@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,14 @@ namespace ScienceTeamsApp.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public TeamsController(ApplicationDbContext context)
+        // 1. UserMangaer field
+        private readonly UserManager<IdentityUser> _userManager;
+
+        // 2. Changing the constructor to accept UserManager as well
+        public TeamsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Teams
@@ -58,7 +64,23 @@ namespace ScienceTeamsApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                // 1. Adding the new team to the database context
                 _context.Add(team);
+
+                var currentUserId = _userManager.GetUserId(User);
+
+                // 2. ActivityLog
+                var log = new ActivityLog
+                {
+                    Action = "Create Team",
+                    Description = $"A new team is created: {team.Name}",
+                    Timestamp = DateTime.Now,
+                    UserId = currentUserId
+                };
+
+                _context.Add(log);
+
+                // 3. Saving changes to the database
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

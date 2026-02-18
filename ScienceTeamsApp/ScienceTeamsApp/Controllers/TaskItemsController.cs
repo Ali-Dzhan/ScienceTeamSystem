@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ScienceTeamsApp.Data;
 using ScienceTeamsApp.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ScienceTeamsApp.Controllers
 {
@@ -14,9 +15,12 @@ namespace ScienceTeamsApp.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public TaskItemsController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public TaskItemsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: TaskItems
@@ -64,6 +68,18 @@ namespace ScienceTeamsApp.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(taskItem);
+                var currentUserId = _userManager.GetUserId(User);
+
+                var log = new ActivityLog
+                {
+                    Action = "Create Task",
+                    Description = $"Created task '{taskItem.Title}' with status {taskItem.Status}",
+                    Timestamp = DateTime.Now,
+                    UserId = currentUserId
+                };
+
+                _context.Add(log);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
