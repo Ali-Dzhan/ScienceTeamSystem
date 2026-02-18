@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36705.20 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceTeamsApp", "ScienceTeamsApp\ScienceTeamsApp.csproj", "{214A48C2-C24D-4903-977A-F861BD40D09C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceTeamsApp", "ScienceTeamsApp\ScienceTeamsApp.csproj", "{58A7A6E6-7D1C-4F2B-A24A-EA453CA69712}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{214A48C2-C24D-4903-977A-F861BD40D09C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{214A48C2-C24D-4903-977A-F861BD40D09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{214A48C2-C24D-4903-977A-F861BD40D09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{214A48C2-C24D-4903-977A-F861BD40D09C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A7A6E6-7D1C-4F2B-A24A-EA453CA69712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A7A6E6-7D1C-4F2B-A24A-EA453CA69712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A7A6E6-7D1C-4F2B-A24A-EA453CA69712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A7A6E6-7D1C-4F2B-A24A-EA453CA69712}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {29511C97-7A1D-4D39-B855-66F70582A6D2}
+		SolutionGuid = {8CE006BB-5141-48A1-A0AD-5627CE7C885F}
 	EndGlobalSection
 EndGlobal
