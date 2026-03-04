@@ -101,6 +101,13 @@ namespace ScienceTeamsApp.Controllers
             {
                 return NotFound();
             }
+
+            var currentUserId = _userManager.GetUserId(User);
+            if (taskItem.AssignedUserId != currentUserId)
+            {
+                return Forbid();
+            }
+
             ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "UserName", taskItem.AssignedUserId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", taskItem.TeamId);
             return View(taskItem);
@@ -167,6 +174,12 @@ namespace ScienceTeamsApp.Controllers
             if (taskItem == null)
             {
                 return NotFound();
+            }
+
+            var currentUserId = _userManager.GetUserId(User);
+            if (taskItem.AssignedUserId != currentUserId)
+            {
+                return Forbid();
             }
 
             return View(taskItem);
