@@ -40,7 +40,10 @@ namespace ScienceTeamsApp.Controllers
             }
 
             var team = await _context.Teams
+                .Include(t => t.Tasks)
+                    .ThenInclude(task => task.AssignedUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (team == null)
             {
                 return NotFound();
