@@ -120,6 +120,16 @@ namespace ScienceTeamsApp.Controllers
                 try
                 {
                     _context.Update(team);
+                    var currentUserId = _userManager.GetUserId(User);
+                    var log = new ActivityLog
+                    {
+                        Action = "Create Team",
+                        Description = $"A new team is created: {team.Name}",
+                        Timestamp = DateTime.Now,
+                        UserId = currentUserId
+                    };
+
+                    _context.Add(log);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -165,6 +175,16 @@ namespace ScienceTeamsApp.Controllers
             if (team != null)
             {
                 _context.Teams.Remove(team);
+                var currentUserId = _userManager.GetUserId(User);
+                var log = new ActivityLog
+                {
+                    Action = "Create Team",
+                    Description = $"A new team is created: {team.Name}",
+                    Timestamp = DateTime.Now,
+                    UserId = currentUserId
+                };
+
+                _context.Add(log);
             }
 
             await _context.SaveChangesAsync();

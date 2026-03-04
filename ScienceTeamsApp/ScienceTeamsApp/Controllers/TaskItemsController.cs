@@ -53,7 +53,7 @@ namespace ScienceTeamsApp.Controllers
         // GET: TaskItems/Create
         public IActionResult Create()
         {
-            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "UserName");
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
             return View();
         }
@@ -83,7 +83,7 @@ namespace ScienceTeamsApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "Id", taskItem.AssignedUserId);
+            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "UserName", taskItem.AssignedUserId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", taskItem.TeamId);
             return View(taskItem);
         }
@@ -101,7 +101,7 @@ namespace ScienceTeamsApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "Id", taskItem.AssignedUserId);
+            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "UserName", taskItem.AssignedUserId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", taskItem.TeamId);
             return View(taskItem);
         }
@@ -123,6 +123,15 @@ namespace ScienceTeamsApp.Controllers
                 try
                 {
                     _context.Update(taskItem);
+                    var currentUserId = _userManager.GetUserId(User);
+                    var log = new ActivityLog
+                    {
+                        Action = "Edit Task",
+                        Description = $"Task Editted: '{taskItem.Title}'",
+                        Timestamp = DateTime.Now,
+                        UserId = currentUserId
+                    };
+                    _context.Add(log);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -138,7 +147,7 @@ namespace ScienceTeamsApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "Id", taskItem.AssignedUserId);
+            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "UserName", taskItem.AssignedUserId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", taskItem.TeamId);
             return View(taskItem);
         }
@@ -172,6 +181,15 @@ namespace ScienceTeamsApp.Controllers
             if (taskItem != null)
             {
                 _context.TaskItems.Remove(taskItem);
+                var currentUserId = _userManager.GetUserId(User);
+                var log = new ActivityLog
+                {
+                    Action = "Delete Task",
+                    Description = $"Task Deleted: '{taskItem.Title}'",
+                    Timestamp = DateTime.Now,
+                    UserId = currentUserId
+                };
+                _context.Add(log);
             }
 
             await _context.SaveChangesAsync();

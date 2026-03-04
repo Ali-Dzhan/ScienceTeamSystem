@@ -22,8 +22,12 @@ namespace ScienceTeamsApp.Controllers
         // GET: ActivityLogs
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ActivityLogs.Include(a => a.User);
-            return View(await applicationDbContext.ToListAsync());
+            var logs = await _context.ActivityLogs
+                .Include(a => a.User)
+                .OrderByDescending(a => a.Timestamp)
+                .ToListAsync();
+
+            return View(logs);
         }
 
         // GET: ActivityLogs/Details/5
